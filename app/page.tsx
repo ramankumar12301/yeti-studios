@@ -11,9 +11,9 @@ const navItems = [
 ];
 
 const bannerImages = [
-  { src: "/Banner%20Images/Banner_1.png", alt: "Classic Indian cinema couple" },
-  { src: "/Banner%20Images/Banner_2.png", alt: "Golden era leading lady" },
-  { src: "/Banner%20Images/Banner_3.png", alt: "Vintage cinema couple in black and white" },
+  { src: "/Banner%20Images/Banner_1.png", alt: "Classic Indian cinema couple", focus: "70% 50%" },
+  { src: "/Banner%20Images/Banner_2.png", alt: "Golden era leading lady", focus: "68% 50%" },
+  { src: "/Banner%20Images/Banner_3.png", alt: "Vintage cinema couple in black and white", focus: "55% 50%" },
 ];
 
 const galleryPhotos = [
@@ -194,22 +194,22 @@ export default function Home() {
 
       <section className="hero" id="home" aria-label="Featured cinema banners">
         <div className="hero-shade" />
-        <div className="hero-photo" aria-hidden="true">
-          {bannerImages.map((banner, index) => (
-            <div
-              key={banner.src}
-              className={`hero-slide ${heroSlide === index ? "active" : ""}`}
-              style={{ backgroundImage: `url("${banner.src}")` }}
-            />
-          ))}
-        </div>
-        <div className="hero-copy">
-          <p className="eyebrow"><i /> CLASSIC COLLECTION</p>
-          <h1>Timeless<br />Indian Cinema</h1>
-          <div className="pink-rule" />
-          <p className="intro">A curated collection of iconic films, legendary actors and unforgettable moments from Indian cinema.</p>
-          <div className="actions">
-            <a className="button primary" href="#gallery" onClick={(event) => scrollToSection(event, "gallery")}><span>▷</span> Explore Collection</a>
+        <div className="hero-inner">
+          <div className="hero-photo" aria-hidden="true">
+            {bannerImages.map((banner, index) => (
+              <div key={banner.src} className={`hero-slide ${heroSlide === index ? "active" : ""}`}>
+                <img src={banner.src} alt="" style={{ objectPosition: banner.focus }} />
+              </div>
+            ))}
+          </div>
+          <div className="hero-copy">
+            <p className="eyebrow"><i /> CLASSIC COLLECTION</p>
+            <h1>Timeless<br />Indian Cinema</h1>
+            <div className="pink-rule" />
+            <p className="intro">A curated collection of iconic films, legendary actors and unforgettable moments from Indian cinema.</p>
+            <div className="actions">
+              <a className="button primary" href="#gallery" onClick={(event) => scrollToSection(event, "gallery")}><span>▷</span> Explore Collection</a>
+            </div>
           </div>
         </div>
         <div className="hero-slider-controls" aria-label="Hero banner controls">
@@ -282,9 +282,9 @@ export default function Home() {
           <p className="contact-description">For business enquiries, creative collaborations and archive partnerships, connect with the YETI STUDIOS team.</p>
 
           <div className="contact-details">
-            <a className="contact-detail" href="mailto:hello@timelesscinema.in">
+            <a className="contact-detail" href="mailto:hello@yetistudio.com">
               <span>Email</span>
-              <strong>hello@timelesscinema.in</strong>
+              <strong>hello@yetistudio.com</strong>
             </a>
             <div className="contact-detail">
               <span>Location</span>

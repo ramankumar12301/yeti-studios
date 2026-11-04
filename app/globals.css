@@ -232,11 +232,154 @@ a.contact-detail:hover{transform:translateY(-3px);border-color:#ff00667a;backgro
 }
 @media(max-width:640px){.contact-form-row{grid-template-columns:1fr;gap:18px}.contact-details{margin:34px auto 38px}}
 @media(max-width:480px){.contact{padding:64px 5% 72px}.contact h2{font-size:34px}.contact-description{font-size:14px}.contact-submit{width:100%}}
-.hero{display:grid;grid-template-columns:42% 58%;align-items:center;padding:0}
-.hero-copy{grid-column:1;grid-row:1;width:100%;max-width:none;margin-top:0;padding:100px clamp(20px,2.5vw,48px) 90px 7.6%;align-self:center}
-.hero-photo{position:relative;right:auto;top:auto;grid-column:2;grid-row:1;width:100%;height:100%;background-size:cover;background-position:center 38%;mask-image:linear-gradient(90deg,transparent 0%,#000 10%);opacity:.96}
+.hero{display:block;padding:0}
+.hero-inner{display:grid;grid-template-columns:42% 58%;align-items:center;width:100%;max-width:none;height:100%;margin:0;padding:0}
+.hero-copy{grid-column:1;grid-row:1;width:100%;max-width:none;margin:0;padding:100px clamp(16px,1.5vw,24px) 90px clamp(24px,5.8vw,112px);align-self:center}
+.hero-copy h1{white-space:nowrap}
+.hero-photo{position:relative;right:auto;top:auto;grid-column:2;grid-row:1;width:100%;height:100%;overflow:hidden;mask-image:linear-gradient(90deg,transparent 0%,#000 6%);opacity:.96}
+.hero-slide{overflow:hidden}
+.hero-slide img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 50%}
 @media(max-width:800px){
-.hero{display:flex;align-items:flex-start;padding:150px 7% 100px}
-.hero-copy{width:auto;max-width:none;padding:0;margin:0;align-self:auto}
-.hero-photo{position:absolute;right:0;top:0;width:100%;height:100%;background-position:center;mask-image:linear-gradient(180deg,#000 0%,transparent 95%);opacity:.42}
+.hero{display:block;padding:0}
+.hero-inner{display:block;width:100%;max-width:none;height:100%;padding:0;margin:0}
+.hero-copy{width:100%;max-width:none;padding:150px 7% 100px;margin:0;align-self:auto}
+.hero-copy h1{white-space:normal}
+.hero-photo{position:absolute;right:0;top:0;width:100%;height:100%;mask-image:linear-gradient(180deg,#000 0%,transparent 95%);opacity:.42}
+}
+
+
+/* YETI STUDIOS - FINAL HERO LAYOUT FIX */
+
+.hero {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: min(82vh, 850px);
+  min-height: 690px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 42%) minmax(0, 58%);
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  align-items: stretch;
+}
+
+.hero-copy {
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  align-self: center;
+  margin: 0;
+  padding: 60px 24px 60px clamp(30px, 5.8vw, 90px);
+}
+
+.hero-copy h1 {
+  font-size: clamp(48px, 5.2vw, 76px);
+  line-height: 1.02;
+  white-space: nowrap;
+  letter-spacing: -2px;
+}
+
+.hero-photo {
+  grid-column: 2;
+  grid-row: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  right: auto;
+  top: auto;
+  overflow: hidden;
+  opacity: 1;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 8%,
+    #000 100%
+  );
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-shade {
+  pointer-events: none;
+}
+
+@media (max-width: 800px) {
+  .hero {
+    min-height: 690px;
+    height: 690px;
+  }
+
+  .hero-inner {
+    display: block;
+  }
+
+  .hero-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    mask-image: linear-gradient(
+      180deg,
+      #000 0%,
+      transparent 95%
+    );
+  }
+
+  .hero-copy {
+    position: relative;
+    padding: 150px 7% 100px;
+  }
+
+  .hero-copy h1 {
+    white-space: normal;
+    font-size: 48px;
+  }
+}
+
+
+@media (min-width: 801px) {
+  .hero-copy {
+    padding-left: clamp(90px, 9vw, 150px);
+  }
+}
+
+
+@media (max-width: 800px) {
+  .hero-slider-controls {
+    position: absolute;
+    left: 50%;
+    right: auto;
+    bottom: 24px;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 10;
+  }
 }
