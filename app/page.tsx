@@ -146,6 +146,18 @@ export default function Home() {
 
   const selectedPhoto = lightboxIndex === null ? null : galleryPhotos[lightboxIndex];
 
+  const handleContactSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const name = String(data.get("name") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
+    const subject = String(data.get("subject") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+
+    window.location.href = `mailto:hello@timelesscinema.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
   return (
     <main>
       <header className={`topbar ${menuOpen ? "menu-open" : ""}`}>
@@ -264,19 +276,47 @@ export default function Home() {
       </section>
 
       <section className="contact" id="contact" aria-labelledby="contact-heading">
-        <div className="contact-copy">
+        <div className="contact-inner">
           <p className="eyebrow"><i /> GET IN TOUCH</p>
-          <h2 id="contact-heading">Contact Us</h2>
-          <p className="section-lead">Have a question about the collection, a restoration request or a story to share? We would love to hear from you.</p>
+          <h2 id="contact-heading">CONTACT US</h2>
+          <p className="contact-description">For business enquiries, creative collaborations and archive partnerships, connect with the YETI STUDIOS team.</p>
+
           <div className="contact-details">
-            <a href="mailto:hello@timelesscinema.in">hello@timelesscinema.in</a>
-            <span>Mumbai · India</span>
-            <span>Mon – Fri, 10:00 – 18:00 IST</span>
+            <a className="contact-detail" href="mailto:hello@timelesscinema.in">
+              <span>Email</span>
+              <strong>hello@timelesscinema.in</strong>
+            </a>
+            <div className="contact-detail">
+              <span>Location</span>
+              <strong>Mumbai · India</strong>
+            </div>
+            <div className="contact-detail">
+              <span>Business Hours</span>
+              <strong>Mon – Fri, 10:00 – 18:00 IST</strong>
+            </div>
           </div>
-          <a className="button primary contact-button" href="mailto:hello@timelesscinema.in"><span>✉</span> Email Us</a>
-        </div>
-        <div className="contact-visual" role="img" aria-label="Classic Indian cinema still">
-          <span>Preserving every frame</span>
+
+          <form className="contact-form" onSubmit={handleContactSubmit}>
+            <div className="contact-form-row">
+              <label>
+                <span>Full Name</span>
+                <input type="text" name="name" placeholder="Your full name" autoComplete="name" required />
+              </label>
+              <label>
+                <span>Email Address</span>
+                <input type="email" name="email" placeholder="you@example.com" autoComplete="email" required />
+              </label>
+            </div>
+            <label>
+              <span>Subject</span>
+              <input type="text" name="subject" placeholder="How can we help?" required />
+            </label>
+            <label>
+              <span>Message</span>
+              <textarea name="message" rows={5} placeholder="Tell us about your enquiry or collaboration idea..." required />
+            </label>
+            <button className="button primary contact-submit" type="submit">Send Message</button>
+          </form>
         </div>
       </section>
 
