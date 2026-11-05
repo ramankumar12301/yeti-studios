@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const navItems = [
   { id: "home", label: "Home" },
@@ -54,7 +54,7 @@ const galleryPhotos = [
 const team = [
   {
     name: "Saumin Suresh Patel",
-    photo: "/Our%20Gallery/10.jpg",
+    photo: "/Team/Saumin Suresh Patel.jpg",
     instagram: { label: "@sauminspatel", url: "https://www.instagram.com/sauminspatel/" },
     bio: [
       "Saumin Suresh Patel is an Illustrator from Mumbai, India. He has been actively creating dynamic and stunning illustrations for prestigious projects which include – A graphic novel: Agent Vinod-The Jungfrau Encounter for Westland, various comics like Bahubali-Battle of the Bold, in addition to Multiple Comic Books with International Brands such as – 18 Days, The Mighty Yeti for Graphic India & Black Cloud for Image Comics. He has worked closely on visualizing the stories of some of the finest film directors like Vidhu Vinod Chopra, Sriram Raghavan, Ashutosh Gowarikar, Rajesh Krishnan and more.",
@@ -64,7 +64,7 @@ const team = [
   },
   {
     name: "Arjun Mogre",
-    photo: "/Our%20Gallery/7.jpg",
+    photo: "/Team/Arjun Mogre.jpg",
     instagram: null,
     bio: [
       "Arjun Mogre is an internationally awarded film-maker, writer and producer with more than 18 years of experience across films, television, digital and adfilms. He has previously worked with RSVP, UTV motion pictures and also headed the unscripted division at Applause Entertainment where he produced several shows and developed more than 15 original IPs. At Applause he has also been responsible in the commissioning of various successful web-series and films such as The Hunt, Sharmaji Ki Beti, Kafas, Kaun Banegi Shikharwati etc. The documentaries he produced, Indira's Emergency and Modern Masters both garnered immense love from audiences and bagged various awards. Arjun has worked with industry stalwarts like Sameer Nair, Subhash Ghai, Madhur Bhandarkar, Vikramaditya Motwane, Priyanka Chopra, Mira Nair and has also helped partner deals with international players like Imagine Entertainment and Mirabai Films.",
@@ -75,11 +75,50 @@ const team = [
   },
 ];
 
+function useScrollReveal<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      !("IntersectionObserver" in window)
+    ) {
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, visible };
+}
+
 export default function Home() {
   const [heroSlide, setHeroSlide] = useState(0);
   const [activeSection, setActiveSection] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [aboutVisible, setAboutVisible] = useState(false);
+  const aboutRef = useRef<HTMLElement | null>(null);
+  const partnersReveal = useScrollReveal<HTMLDivElement>();
+  const possibilitiesReveal = useScrollReveal<HTMLDivElement>();
 
   const moveHeroSlide = useCallback((direction: number) => {
     setHeroSlide((current) => (current + direction + bannerImages.length) % bannerImages.length);
@@ -159,6 +198,36 @@ export default function Home() {
 
     return () => window.clearTimeout(timer);
   }, [heroSlide]);
+
+  useEffect(() => {
+    const section = aboutRef.current;
+    if (!section) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setAboutVisible(true);
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      setAboutVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setAboutVisible(true);
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -6% 0px" }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (lightboxIndex === null) return;
@@ -277,10 +346,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="about-section" id="about" aria-labelledby="about-heading">
+      <section ref={aboutRef} className={`about-section ${aboutVisible ? "is-visible" : ""}`} id="about" aria-labelledby="about-heading">
         <div className="about-inner">
           <header className="about-header">
-            <h2 id="about-heading">Bringing Stories, Ideas and Intellectual Property to New Audiences.</h2>
+            <h2 id="about-heading">Bringing Stories, Ideas and<br className="about-heading-break" />{" "}Intellectual Property to New Audiences.</h2>
           </header>
 
           <div className="about-intro">
@@ -322,21 +391,67 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="about-block about-split">
-            <h3>Connecting the Right Partners</h3>
-            <div className="about-split-copy">
-              <p>The content business is built on relationships, insight and the ability to recognise the right opportunity at the right time. Our network extends across a diverse spectrum of industry stakeholders, including independent content buyers, intellectual property owners, producers, production houses, studios, broadcasters, streaming platforms, distributors and international rights holders.</p>
-              <p>We work with emerging independent players as well as established entertainment companies, tailoring our approach to the specific requirements of each partnership. Whether it involves sourcing a particular title, identifying a promising international format, negotiating content rights, representing an IP owner&apos;s catalogue or facilitating a remake or adaptation, we aim to make the process seamless, transparent and commercially rewarding.</p>
-              <p>For buyers, we provide access to a diverse and carefully identified range of content opportunities. For producers and IP owners, we offer avenues to monetise, expand and extend the value of their intellectual property through strategic licensing, distribution and adaptation partnerships.</p>
+          <div
+            ref={partnersReveal.ref}
+            className={`about-block about-split about-partners ${partnersReveal.visible ? "is-visible" : ""}`}
+          >
+            <header className="about-split-heading">
+              <h3>Connecting the Right Partners</h3>
+            </header>
+            <div className="about-split-copy about-partners-copy">
+              <article className="partner-group">
+                <span className="partner-group-top" aria-hidden="true">
+                  <span className="partner-icon" />
+                  <span className="partner-number">01</span>
+                </span>
+                <p>The content business is built on relationships, insight and the ability to recognise the right opportunity at the right time. Our network extends across a diverse spectrum of industry stakeholders, including independent content buyers, intellectual property owners, producers, production houses, studios, broadcasters, streaming platforms, distributors and international rights holders.</p>
+              </article>
+              <article className="partner-group">
+                <span className="partner-group-top" aria-hidden="true">
+                  <span className="partner-icon" />
+                  <span className="partner-number">02</span>
+                </span>
+                <p>We work with emerging independent players as well as established entertainment companies, tailoring our approach to the specific requirements of each partnership. Whether it involves sourcing a particular title, identifying a promising international format, negotiating content rights, representing an IP owner&apos;s catalogue or facilitating a remake or adaptation, we aim to make the process seamless, transparent and commercially rewarding.</p>
+              </article>
+              <article className="partner-group">
+                <span className="partner-group-top" aria-hidden="true">
+                  <span className="partner-icon" />
+                  <span className="partner-number">03</span>
+                </span>
+                <p>For buyers, we provide access to a diverse and carefully identified range of content opportunities. For producers and IP owners, we offer avenues to monetise, expand and extend the value of their intellectual property through strategic licensing, distribution and adaptation partnerships.</p>
+              </article>
             </div>
           </div>
 
-          <div className="about-block about-split">
-            <h3>Beyond Acquisition. Building Possibilities.</h3>
-            <div className="about-split-copy">
-              <p>We recognise that the entertainment industry is constantly evolving. New platforms, changing audience behaviours, emerging storytelling formats and increasingly interconnected markets are reshaping how content is created, consumed and monetised.</p>
-              <p>We approach these changes with an open, forward-looking mindset, combining market understanding with an appreciation for the creative potential of intellectual property. Our objective is not simply to facilitate transactions, but to build meaningful connections between stories, rights holders and businesses that can take those stories further.</p>
-              <p>At our core, we are passionate about content in all its forms and the possibilities it creates. We bring together the people, properties and opportunities that drive the business of entertainment — helping stories find new homes, intellectual property discover new markets and great ideas evolve into successful ventures.</p>
+          <div
+            ref={possibilitiesReveal.ref}
+            className={`about-block about-split about-possibilities ${possibilitiesReveal.visible ? "is-visible" : ""}`}
+          >
+            <header className="about-split-heading">
+              <h3>Beyond Acquisition. Building Possibilities.</h3>
+            </header>
+            <div className="about-split-copy about-possibilities-copy">
+              <article className="possibility-group">
+                <span className="possibility-group-top" aria-hidden="true">
+                  <span className="possibility-number">I</span>
+                  <span className="possibility-icon" />
+                </span>
+                <p>We recognise that the entertainment industry is constantly evolving. New platforms, changing audience behaviours, emerging storytelling formats and increasingly interconnected markets are reshaping how content is created, consumed and monetised.</p>
+              </article>
+              <article className="possibility-group">
+                <span className="possibility-group-top" aria-hidden="true">
+                  <span className="possibility-number">II</span>
+                  <span className="possibility-icon" />
+                </span>
+                <p>We approach these changes with an open, forward-looking mindset, combining market understanding with an appreciation for the creative potential of intellectual property. Our objective is not simply to facilitate transactions, but to build meaningful connections between stories, rights holders and businesses that can take those stories further.</p>
+              </article>
+              <article className="possibility-group">
+                <span className="possibility-group-top" aria-hidden="true">
+                  <span className="possibility-number">III</span>
+                  <span className="possibility-icon" />
+                </span>
+                <p>At our core, we are passionate about content in all its forms and the possibilities it creates. We bring together the people, properties and opportunities that drive the business of entertainment — helping stories find new homes, intellectual property discover new markets and great ideas evolve into successful ventures.</p>
+              </article>
             </div>
           </div>
 
