@@ -49,17 +49,18 @@ const galleryPhotos = [
   { src: "/Our%20Gallery/2.webp", alt: "Black and white portrait of a classic actress" },
   { src: "/Our%20Gallery/10.jpg", alt: "Portrait of a classic Indian film actor" },
   { src: "/Our%20Gallery/14.webp", alt: "Smiling actress from the golden era of cinema" },
+  { src: "/Our%20Gallery/coney-island.jpg", alt: "Gallery photograph" },
 ];
 
 const team = [
   {
     name: "Saumin Suresh Patel",
     photo: "/Team/Saumin Suresh Patel.jpg",
-    instagram: { label: "@sauminspatel", url: "https://www.instagram.com/sauminspatel/" },
     bio: [
-      "Saumin Suresh Patel is an Illustrator from Mumbai, India. He has been actively creating dynamic and stunning illustrations for prestigious projects which include – A graphic novel: Agent Vinod-The Jungfrau Encounter for Westland, various comics like Bahubali-Battle of the Bold, in addition to Multiple Comic Books with International Brands such as – 18 Days, The Mighty Yeti for Graphic India & Black Cloud for Image Comics. He has worked closely on visualizing the stories of some of the finest film directors like Vidhu Vinod Chopra, Sriram Raghavan, Ashutosh Gowarikar, Rajesh Krishnan and more.",
-      "He has a deep understanding of art & artists and his core objective is to create a body of work, which can be distinct & have dynamic visual expression, and take the art from India to global levels. You can follow his work on Instagram-@sauminspatel.",
-      "Apart from creating comics, Saumin has been involved in curating various works of art over time, including films, animated shows, tv shows and others.",
+      "Saumin Suresh Patel is a Mumbai-based Visualiser, Pre-Visualization (Pre-Viz) Artist and Creative Professional with extensive experience in the Indian film and entertainment industry.",
+      "Over the years, he has worked closely with some of India's finest filmmakers, including Vidhu Vinod Chopra, Sriram Raghavan, Ashutosh Gowariker and Nitesh Tiwari, collaborating with leading production houses and the biggest studios in the country.",
+      "His expertise spans concept development, visualisation, pre-visualisation and the creation of dynamic visual experiences across films, animation and other entertainment formats. Beyond his work in cinema, Saumin has been involved in curating and developing creative assets across films, animation, television and other media, with a growing focus on emerging technologies, machine learning and multilingual content formats spanning over 18 languages.",
+      "His vision for Yeti Studios is rooted in this experience, bringing together artistic excellence, cinematic storytelling and emerging technologies to create innovative visual content for Indian and global audiences.",
     ],
   },
   {
@@ -471,22 +472,6 @@ export default function Home() {
               </div>
               <div className="team-profile-body">
                 <h3>{member.name}</h3>
-                {member.instagram && (
-                  <a
-                    className="team-instagram"
-                    href={member.instagram.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Follow ${member.name} on Instagram`}
-                  >
-                    <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="3" y="3" width="18" height="18" rx="5" />
-                      <circle cx="12" cy="12" r="4" />
-                      <path d="M17.5 6.5h.01" />
-                    </svg>
-                    {member.instagram.label}
-                  </a>
-                )}
                 <div className="team-divider" aria-hidden="true" />
                 {member.bio.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
